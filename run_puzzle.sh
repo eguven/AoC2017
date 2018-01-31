@@ -36,6 +36,12 @@ if [ -z "${INPUT}" ]; then
     exit 1
 fi
 
+if [ $((${#INPUT})) -lt 9 ]; then
+    INPUT_PRINT="${INPUT}"
+else
+    INPUT_PRINT="${INPUT:0:8}..."
+fi
+
 # create the target dir for binaries
 mkdir -p ${DIR}/target/${PUZZLE_NO}
 
@@ -49,7 +55,7 @@ done
 # run binaries
 for bin in `ls -1 ${DIR}/target/${PUZZLE_NO}`; do
     bin_file="${DIR}/target/${PUZZLE_NO}/${bin}"
-    echo "[*] Running ${bin_file} with acquired input \"${INPUT:0:8}...[${#INPUT}]\", Out:"
+    echo "[*] Running ${bin_file} with acquired input \"${INPUT_PRINT}[len: ${#INPUT}]\", Out:"
     ${bin_file} "${INPUT}"
 done
 
