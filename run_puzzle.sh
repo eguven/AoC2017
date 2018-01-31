@@ -40,10 +40,8 @@ fi
 mkdir -p ${DIR}/target/${PUZZLE_NO}
 
 # compile
-for source in `ls -1 ${DIR}/src/${PUZZLE_NO}`; do
-    source_file="${DIR}/src/${PUZZLE_NO}/$source"
-    bin_name="$(echo ${source} | cut -d '.' -f 1)"
-    bin_file="${DIR}/target/${PUZZLE_NO}/${bin_name}"
+for source_file in `ls -1 ${DIR}/src/${PUZZLE_NO}/*.rs`; do
+    bin_file=$(echo $source_file | sed 's/\(.*\)src\(.*\)\.rs/\1target\2/')
     echo "[*] Compiling ${source_file} > ${bin_file}"
     rustc ${source_file} -o ${bin_file}
 done
@@ -52,7 +50,7 @@ done
 for bin in `ls -1 ${DIR}/target/${PUZZLE_NO}`; do
     bin_file="${DIR}/target/${PUZZLE_NO}/${bin}"
     echo "[*] Running ${bin_file} with acquired input \"${INPUT:0:8}...[${#INPUT}]\", Out:"
-    ${bin_file} ${INPUT}
+    ${bin_file} "${INPUT}"
 done
 
 echo "[*] Done"
